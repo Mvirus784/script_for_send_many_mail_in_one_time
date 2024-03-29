@@ -1,0 +1,60 @@
+function sendEmailWithAttachment() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = sheet.getDataRange().getValues();
+  // Enter your subject here
+  var subject = "ACMA 'Transforming mobility' 4th Edition global summit & exhibition"; 
+  // Enter your email body here
+  var body = "<p>Dear <strong>[Name],</strong></p>" +
+             "<p>Greetings from Team iX Energy</p>" +
+             "<p>It was a pleasure meeting you at the <strong>ACMA 'Transforming Mobility' 4th Edition global summit & exhibition at Manekshaw Centre, New Delhi 26th - 27th February 2024.</strong></p>" +
+             "<p>We <strong>iX Energy,</strong> are an automotive R & D company (Start-up) engaged in the development of Hybrid & Electric retrofit solutions for medium & heavy commercial vehicles. We are also manufacturing customized EV components as mentioned below:</p>" +
+             "<ul>" +
+             "<li>High voltage power distribution box (HVPDU / HV junction box)</li>" +
+             "<li>Telematics - hardware + Software</li>" +
+             "<li>Cloud server - development, maintenance, and updates</li>" +
+             "<li>Vehicle Display - customized EV display solution</li>" +
+             "<li>Wiring Harness - Customized wiring harnesses - High voltage, Low voltage, and Signal - ISO6722 certified cables, Connectors from reputed international brands like TE, Amphenol, etc.</li>" +
+             "</ul>" +
+             "<p><strong><em>Our system & its components are certified by ARAI (Automotive Research Association of India) & ICAT (International Centre of Automotive Technology).</em></strong></p>" +
+             "<p>I am attaching our product brochures for your reference. Please let me know about any possible collaboration.</p>" +
+             "<p><span style='color:blue;'>Thanks and Regards,</span></p>" +
+             "<p><span style='color:blue;'>Mahesh Adhikari<br>Technical Associate - Testing, Homologation, and integration</span><br>" +
+             "<strong><span style='color:green;'>3 R – Reduce, Reuse, Recycle</span></strong><br>" +
+             "iX Energy Pvt Ltd | website - <a href='www.ixenergy.in' style='color:blue;'>www.ixenergy.in</a><br>" +
+             "<span style='font-size: 10px; color: blue;'>Corp. Add: Plot 6A, Sector 73, Noida, UP - 201309<br>" +
+             "R&D Center: 5 A1, R&I Park, IIT Delhi, Hauz Khas, Delhi - 110016<br>" +
+             "Mob- +91-8851015378 | LinkedIn- iX Energy</span></p>"; 
+   // CC Email Address
+  var ccEmailAddress = "adarshkumarmishra1999@gmail.com,gaurav234mshr@gmail.com";
+  // Iterate through each row in the spreadsheet
+  for (var i = 1; i < data.length; i++) {
+    var row = data[i];
+    var name = row[0];
+    var emailAddress = row[1];
+    
+    // Customize the email body with the recipient's name
+    var personalizedBody = body.replace("[Name]", name);
+    
+    // Attach images from Google Drive
+    var imageFile1 = DriveApp.getFileById("142sg7sNS_fkCD98B4HbxDucfd20PEUcR");
+    var imageFile2 = DriveApp.getFileById("15B9fQh5Rb770O6ayIohJMn5qCIlMBlmJ");
+    var imageFile3 = DriveApp.getFileById("17yIxZEzAzE0DLWu9AvljqI02lHOkSEhR");
+    var imageFile4 = DriveApp.getFileById("1_uv1gu8O9o-xmxSzzz7thu9pRH1AIM2G");
+    
+    // Send the email with attachment
+    GmailApp.sendEmail(emailAddress, subject, '', {
+      htmlBody: personalizedBody,
+      attachments: [
+        imageFile1.getAs(MimeType.PNG),
+        imageFile2.getAs(MimeType.JPEG),
+        imageFile3.getAs(MimeType.JPEG),
+        imageFile4.getAs(MimeType.JPEG),
+
+      ],
+      cc:ccEmailAddress
+    });
+    
+    // Pause for 1 second to avoid exceeding Gmail's sending limits
+    Utilities.sleep(1000);
+  }
+}
